@@ -102,7 +102,7 @@ The main objective of this thesis is to design, implement, and evaluate a multi-
 
 \subsection{Problem statement and research gap}
 
-Current web crawling pipelines are typically optimized for large-scale indexing and generic search, not for targeted, domain-specific deep research. They rely on homogeneous heuristics for link prioritization and treat document validation as a separate filtering step. At the same time, LLM-based evaluation and LLM-as-a-Judge techniques have shown promise for assessing document quality and answer correctness, but are rarely used as first-class signals in the crawling and ranking loop itself \cite{pezzuti2025neuralprioritization, kong2024lmds}. Multi-agent architectures and RL-based web agents further demonstrate that diverse strategies and outcome-based rewards can improve long-horizon reasoning on the web \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}, yet they typically operate on top of external search services rather than controlling the underlying focused crawler. This creates a research gap for architectures that explicitly integrate:
+Current web crawling pipelines are typically optimized for large-scale indexing and generic search, not for targeted domain-specific deep research. They rely on homogeneous heuristics for link prioritization and treat document validation as a separate filtering step. At the same time, LLM-based evaluation and LLM-as-a-Judge techniques have shown promise in assessing document quality and answer correctness, but are rarely used as first-class signals in the crawling and ranking loop itself \cite{pezzuti2025neuralprioritization, kong2024lmds}. Multi-agent architectures and RL-based web agents further demonstrate that diverse strategies and outcome-based rewards can improve long-horizon reasoning on the web \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}, yet they typically operate on top of external search services rather than controlling the underlying focused crawler. This creates a research gap for architectures that explicitly integrate:
 \begin{itemize}
 	    \item semantic and LLM-aware focused crawling, including neural prioritization and domain-specific relevance estimation;
 	    \item LLM-based reviewers that act as critics of document quality and as sources of reward signals for RL policies; and
@@ -112,13 +112,13 @@ The thesis will investigate whether such an integrated architecture can measurab
 
 \subsection{Main objective}
 
-The main objective of this thesis is to design, implement, and empirically evaluate a reusable multi-agent, LLM-assisted semantic crawling framework for a bounded web domain that serves as a retrieval layer for retrieval-augmented generation (RAG) applications. The framework is intended to be reusable for future research on LLM-based web agents and RAG-aware crawling in similar bounded domains.
+The main objective of this thesis is to design, implement, and empirically evaluate a reusable multi-agent, LLM-assisted semantic crawling framework for a bounded web domain that serves as a retrieval layer for retrieval-augmented generation (RAG) applications. The framework is intended to be reused for future research on LLM-based web agents and RAG-aware crawling in similar bounded domains.
 
 \subsection{Research questions}
 
 To achieve this objective, the thesis will address the following research questions and exploratory objectives:
 \begin{itemize}
-    \item \textbf{RQ1 -- LLM-based versus traditional scoring:} How does LLM-based document quality and relevance scoring compare to traditional and embedding-based scoring for focused crawling and RAG retrieval in terms of crawling efficiency, ranking quality, and downstream answer quality?
+    \item \textbf{RQ1 -- LLM-based versus traditional scoring:} How do LLM-based document quality and relevance scoring compare to traditional and embedding-based scoring for focused crawling and RAG retrieval in terms of crawling efficiency, ranking quality, and downstream response quality?
     \item \textbf{RQ2 -- Multi-agent researcher and reviewer architecture:} Can a multi-agent setup with multiple researcher and reviewer agents (LLM critics) discover a more diverse and higher-quality set of documents than a single crawler or single-agent baseline under the same resource budget, and how does inter-agent feedback and sharing of high-value hubs influence performance?
 	    \item \textbf{Exploratory objective -- RL-guided navigation and strategy adaptation (optional):} Explore whether applying RL over high-level crawling and query actions (for example, link and source selection, depth-versus-breadth trade-offs) improves early harvest rate and RAG performance compared to hand-designed heuristics within the time and computational constraints of the thesis.
 	    \item \textbf{RQ3 -- Reliability of LLM-based validation:} How reliable are LLM-as-a-Judge signals (relevance, factuality, recency, usefulness) when used for ranking and, where RL is applied, as rewards compared to human annotations and traditional IR metrics, and under what conditions do these signals introduce bias or instability into the crawling and retrieval pipeline?
@@ -148,7 +148,7 @@ The work is organized into the following phases:
 \begin{enumerate}
     \item \textbf{Domain selection and ground truth:} choose a bounded, technically oriented domain (for example, a subset of cyber threat intelligence sources or scientific websites), define information needs and representative queries, and construct a small gold-standard set of manually labeled documents used for hyper-parameter tuning and supervised metrics. Where the domain relies heavily on client-side rendering or dynamic content, incorporate browser-based scraping tools (for example, Playwright) to capture rendered HTML.
     \item \textbf{Baseline crawling and retrieval pipeline:} implement a focused crawler with traditional or embedding-based scoring that collects and parses pages into passages using standard HTML parsing and boilerplate removal, and build a retrieval-augmented generation (RAG) pipeline on top of a vector index to provide the main non-LLM and non-agentic baseline.
-    \item \textbf{LLM-based validation and scoring:} design reviewer prompts so that a strong LLM scores documents along relevance, quality, recency, and factuality; combine these into a single quality score and, where feasible, distil them into a cheaper classifier or regressor used during online crawling.
+    \item \textbf{LLM-based validation and scoring:} design reviewer prompts so that a strong LLM scores documents along relevance, quality, recency, and factuality; combine these into a single quality score and, where feasible, distill them into a cheaper classifier or regressor used during online crawling.
     \item \textbf{Multi-agent architecture:} extend the baseline into a system with several researcher agents that propose crawling actions and reviewer agents that apply LLM-based evaluation, coordinated through a shared frontier and index.
     \item \textbf{RL-guided policy (optional):} if resources allow, model high-level strategy adaptation as a reinforcement learning problem with compact state features summarizing crawler behavior, actions over link and source selection and exploration parameters, and rewards combining reviewer scores, crawling metrics, and RAG performance.
     \item \textbf{Evaluation and ablation studies:} compare system variants under controlled crawl budgets using crawling, ranking, and RAG metrics, and perform ablation studies to isolate the contribution of LLM-based scoring, multi-agent exploration, and any RL-based adaptation.
@@ -160,7 +160,7 @@ Evaluation focuses on three aspects: (i) crawling efficiency and coverage, (ii) 
 
 \subsection{Evaluation objectives and baselines}
 
-The main evaluation objectives are:
+The main evaluation objectives are as follows:
 \begin{itemize}
     \item quantify how LLM-based document scoring affects crawling efficiency and ranking quality compared to traditional or embedding-based scoring (RQ1);
     \item measure the impact of the multi-agent architecture on the diversity and quality of discovered documents (RQ2);
@@ -170,15 +170,15 @@ The main evaluation objectives are:
 To address these objectives, the following system variants will be compared:
 \begin{enumerate}
     \item a \emph{baseline semantic crawler} with embedding-based scoring and no LLM reviewers;
-    \item a \emph{single-agent crawler with LLM-based scoring}, where reviewer scores influence frontier prioritization and index filtering;
+    \item a \emph{single agent crawler with LLM-based scoring}, where reviewer scores influence frontier prioritization and index filtering;
     \item a \emph{multi-agent crawler} with multiple researcher and reviewer agents sharing a common index and feedback channels; and
     \item optionally, an \emph{RL-enhanced multi-agent system}, where a learned policy adapts high-level strategies.
 \end{enumerate}
-All configurations use the same domain, seed set, and crawling budget, and they are evaluated on identical query sets and labeled subsets of documents.
+All configurations use the same domain, seed set, and crawling budget, and are evaluated on identical query sets and labeled subsets of documents.
 
 \subsection{Crawling metrics}
 
-To evaluate crawling efficiency and coverage, the thesis will use metrics inspired by focused crawling and neural prioritization research \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling, pezzuti2025neuralprioritization}:
+To evaluate crawl efficiency and coverage, the thesis will use metrics inspired by focused crawling and neural prioritization research \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling, pezzuti2025neuralprioritization}:
 \begin{itemize}
     \item \textbf{Harvest rate (HR):} the proportion of fetched documents that are labeled as relevant in the gold-standard set. HR is computed cumulatively as a function of the number of pages fetched, emphasizing early-yield performance.
     \item \textbf{Relevant documents found in budget $B$:} the absolute number of relevant documents discovered within a fixed crawl budget (for example, after $B$ pages), which reflects how efficiently a variant uses its resources.
@@ -191,7 +191,7 @@ Relevance labels for HR and related quantities are obtained from the manually an
 
 Retrieval and ranking quality are assessed on a held-out query set with document-level or passage-level relevance labels. The main metrics are:
 \begin{itemize}
-    \item \textbf{nDCG@k:} normalized discounted cumulative gain at cut-off $k$, which captures both relevance and rank position and is widely used in information retrieval and focused crawling evaluation \cite{pezzuti2025neuralprioritization};
+    \item \textbf{nDCG@k:} normalized discounted cumulative gain at cut-off $k$, which captures both relevance and rank position and is widely used in information retrieval and focused crawl evaluation \cite{pezzuti2025neuralprioritization};
     \item \textbf{MAP@k and MRR:} mean average precision and mean reciprocal rank at cut-off $k$, reflecting early precision and the ability to place at least one relevant item near the top of the ranking; and
     \item \textbf{Recall@k:} the fraction of all relevant documents for a query that appear within the top-$k$ retrieved items, indicating how much of the relevant corpus the system can surface.
 \end{itemize}
