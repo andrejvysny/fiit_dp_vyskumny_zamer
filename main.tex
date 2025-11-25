@@ -146,7 +146,7 @@ The methodology follows a design-science and experimental approach in which a pr
 
 The work is organized into the following phases:
 \begin{enumerate}
-    \item \textbf{Domain selection and ground truth:} choose a bounded, technically oriented domain (for example, a subset of cyber threat intelligence sources or scientific websites), define information needs and representative queries, and construct a small gold-standard set of manually labelled documents used for hyper-parameter tuning and supervised metrics. Where the domain relies heavily on client-side rendering or dynamic content, incorporate browser-based scraping tools (for example, Playwright) to capture rendered HTML.
+    \item \textbf{Domain selection and ground truth:} choose a bounded, technically oriented domain (for example, a subset of cyber threat intelligence sources or scientific websites), define information needs and representative queries, and construct a small gold-standard set of manually labeled documents used for hyper-parameter tuning and supervised metrics. Where the domain relies heavily on client-side rendering or dynamic content, incorporate browser-based scraping tools (for example, Playwright) to capture rendered HTML.
     \item \textbf{Baseline crawling and retrieval pipeline:} implement a focused crawler with traditional or embedding-based scoring that collects and parses pages into passages using standard HTML parsing and boilerplate removal, and build a retrieval-augmented generation (RAG) pipeline on top of a vector index to provide the main non-LLM and non-agentic baseline.
     \item \textbf{LLM-based validation and scoring:} design reviewer prompts so that a strong LLM scores documents along relevance, quality, recency, and factuality; combine these into a single quality score and, where feasible, distil them into a cheaper classifier or regressor used during online crawling.
     \item \textbf{Multi-agent architecture:} extend the baseline into a system with several researcher agents that propose crawling actions and reviewer agents that apply LLM-based evaluation, coordinated through a shared frontier and index.
@@ -156,7 +156,7 @@ The work is organized into the following phases:
 
 \section{Evaluation}
 
-Evaluation focuses on three aspects: (i) crawling efficiency and coverage, (ii) retrieval and ranking quality, and (iii) downstream RAG answer quality. All experiments compare the proposed system against well-defined baselines under matched resource budgets, and report basic scalability indicators such as how performance and resource usage change with increasing crawl budget or domain size.
+Evaluation focuses on three aspects: (i) crawling efficiency and coverage, (ii) retrieval and ranking quality, and (iii) downstream RAG answer quality. All experiments compare the proposed system against well-defined baselines under matched resource budgets and report basic scalability indicators such as how performance and resource usage change with increasing crawl budget or domain size.
 
 \subsection{Evaluation objectives and baselines}
 
@@ -164,7 +164,7 @@ The main evaluation objectives are:
 \begin{itemize}
     \item quantify how LLM-based document scoring affects crawling efficiency and ranking quality compared to traditional or embedding-based scoring (RQ1);
     \item measure the impact of the multi-agent architecture on the diversity and quality of discovered documents (RQ2);
-    \item evaluate the reliability and stability of LLM-based judgements used as ranking signals and, where RL is applied, as reward signals (RQ3); and
+    \item evaluate the reliability and stability of LLM-based judgments used as ranking signals and, where RL is applied, as reward signals (RQ3); and
     \item as an exploratory objective, assess whether RL-guided strategies, if implemented, improve early-yield effectiveness and RAG performance over hand-crafted policies.
 \end{itemize}
 To address these objectives, the following system variants will be compared:
@@ -174,14 +174,14 @@ To address these objectives, the following system variants will be compared:
     \item a \emph{multi-agent crawler} with multiple researcher and reviewer agents sharing a common index and feedback channels; and
     \item optionally, an \emph{RL-enhanced multi-agent system}, where a learned policy adapts high-level strategies.
 \end{enumerate}
-All configurations use the same domain, seed set, and crawling budget, and they are evaluated on identical query sets and labelled subsets of documents.
+All configurations use the same domain, seed set, and crawling budget, and they are evaluated on identical query sets and labeled subsets of documents.
 
 \subsection{Crawling metrics}
 
 To evaluate crawling efficiency and coverage, the thesis will use metrics inspired by focused crawling and neural prioritization research \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling, pezzuti2025neuralprioritization}:
 \begin{itemize}
-    \item \textbf{Harvest rate (HR):} the proportion of fetched documents that are labelled as relevant in the gold-standard set. HR is computed cumulatively as a function of the number of pages fetched, emphasising early-yield performance.
-    \item \textbf{Relevant documents found at budget $B$:} the absolute number of relevant documents discovered within a fixed crawl budget (for example, after $B$ pages), which reflects how efficiently a variant uses its resources.
+    \item \textbf{Harvest rate (HR):} the proportion of fetched documents that are labeled as relevant in the gold-standard set. HR is computed cumulatively as a function of the number of pages fetched, emphasizing early-yield performance.
+    \item \textbf{Relevant documents found in budget $B$:} the absolute number of relevant documents discovered within a fixed crawl budget (for example, after $B$ pages), which reflects how efficiently a variant uses its resources.
     \item \textbf{Coverage of sources and topics:} the number of distinct domains or source sites visited and the distribution of topics covered, to assess whether multi-agent strategies improve diversity.
     \item \textbf{Freshness (if applicable):} for domains with time-stamped content, simple freshness indicators (for example, fraction of documents updated within the last year) will be reported, following incremental crawling work \cite{yadav2012incrementalcrawler, jcssp.2015.120.126}.
 \end{itemize}
@@ -195,7 +195,7 @@ Retrieval and ranking quality are assessed on a held-out query set with document
     \item \textbf{MAP@k and MRR:} mean average precision and mean reciprocal rank at cut-off $k$, reflecting early precision and the ability to place at least one relevant item near the top of the ranking; and
     \item \textbf{Recall@k:} the fraction of all relevant documents for a query that appear within the top-$k$ retrieved items, indicating how much of the relevant corpus the system can surface.
 \end{itemize}
-These metrics are computed separately for the baseline and for each LLM-enhanced variant, using the same underlying annotated subset of the corpus. When sampling documents for labelling, care is taken to include both high-scoring and low-scoring items to obtain meaningful estimates.
+These metrics are computed separately for the baseline and for each LLM-enhanced variant, using the same underlying annotated subset of the corpus. When sampling documents for labeling, care is taken to include both high-scoring and low-scoring items to obtain meaningful estimates.
 
 \subsection{RAG answer quality}
 
@@ -205,7 +205,7 @@ To assess the impact of crawling and scoring on downstream question answering, a
     \item automatic overlap-based metrics such as token-level F1 or ROUGE-1 are computed where suitable reference answers exist; and
     \item an LLM-as-a-Judge evaluation is performed using a separate model prompted to rate answers along dimensions such as correctness, relevance, completeness, and faithfulness to the retrieved evidence, following practices from deep research and web-agent work \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}.
 \end{itemize}
-For a smaller subset of queries, human judgements are collected (for example, from the author or domain experts) to calibrate the LLM-as-a-Judge scores and to check for systematic biases. Where appropriate, correlations between human and LLM-based ratings are reported.
+For a smaller subset of queries, human judgments are collected (for example, from the author or domain experts) to calibrate the LLM-as-a-Judge scores and to check for systematic biases. Where appropriate, correlations between human and LLM-based ratings are reported.
 
 \subsection{Ablation and robustness analysis}
 
@@ -215,7 +215,7 @@ To better understand the contribution of individual components, the thesis will 
     \item collapsing the multi-agent system into a single agent with the same reviewer, to measure the benefit of parallel exploration; and
     \item turning off any RL-based adaptation (if implemented) to compare learned policies to heuristic strategies.
 \end{itemize}
-Each experiment is repeated with different random seeds or permutations of the crawl frontier where possible, and mean values with confidence intervals are reported. For key comparisons (for example, baseline versus full system), simple significance tests (such as paired $t$-tests or non-parametric alternatives) are used to assess whether observed improvements are statistically meaningful, within the limitations of thesis-scale experiments.
+Each experiment is repeated with different random seeds or permutations of the crawl frontier, where possible, and mean values with confidence intervals are reported. For key comparisons (for example, baseline versus full system), simple significance tests (such as paired $t$-tests or non-parametric alternatives) are used to assess whether observed improvements are statistically meaningful, within the limitations of thesis-scale experiments.
 
 \printbibliography
 \end{document}
