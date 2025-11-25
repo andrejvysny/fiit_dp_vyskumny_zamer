@@ -67,12 +67,16 @@
 \newpage
 
 \section{Assignment}
-\todo[inline]{Prepisat to EN}
 \textbf{
-Aplikácia metód umelej inteligencie do problematiky Web scrapingu}
+Application of artificial intelligence methods to website scraping problems}
 
-S popularizáciou veľkých jazykových modelov (LLMs) sa otvorila otázka, ako udržať tieto modely aktuálne a zabezpečiť, aby ich znalosti zodpovedali súčasnému dianiu vo svete. Väčšina aktuálnych informácií sa totiž nachádza v online webovom prostredí. S rastúcou potrebou poskytovať aktuálne znalosti LLMs rastie aj potreba vytvárania, používania a udržiavania spoľahlivých web scraperov, ktoré zhromažďujú najnovšie informácie. Využitie umelej inteligencie (AI) v oblasti web scrapingu predstavuje nový prístup k získavaniu dát z internetu. Na rozdiel od tradičných metód web scrapingu poskytujú AI nástroje schopnosť dynamicky sa adaptovať a následne spracovávať neštruktúrované údaje. AI modely využívané v tejto oblasti sú založené na strojovom učení, konkrétne na spracovaní prirodzeného jazyka (NLP), ktoré položilo základy pre pokročilé techniky web scrapingu v rôznych odvetviach vrátane e-commerce, výskumu trhu a spravodajstva. Frameworky ako PyTorch, Huggingface a Langchain, DSPy umožňujú vývoj sofistikovaných AI modelov a agentov pre web scraping, zatiaľ čo nástroje ako Playwright a Beautiful Soup poskytujú robustné základy pre extrakciu dát. Nové nástroje na predspracovanie webových stránok, ako Jina Reader, FireCrawl alebo Crawl4AI, rozširujú možnosti web scrapingu pre využitie v spolupráci s LLM.
-Analyzujte tieto technológie a porovnajte ich ekosystémy z pohľadu vývojára aj koncového používateľa, taktiež porovnajte tieto nástroje z hľadiska ich schopností a presnosti v extrakcii dát. Navrhnite a implementujte AI-powered web scraping nástroj využívajúci najnovšie technológie v oblasti strojového učenia. Rozoberte, ako sa tento prístup líši od tradičných metód web scrapingu. Nakoniec vyhodnoťte vami implemnetovaný nástroj z hľadiska presnosti, škálovateľnosti a schopnosti spracovávať dynamický webový obsah z rôznych oblastí.
+With the popularization of large language models (LLMs), the question has emerged of how to keep these models up to date and ensure that their knowledge reflects current events in the world. Most up-to-date information is found in the online web environment. As the need to provide LLMs with current knowledge grows, so does the need to create, use, and maintain reliable web scrapers that collect the latest information.
+
+The use of artificial intelligence (AI) in web scraping represents a new approach to obtaining data from the internet. Unlike traditional web scraping methods, AI tools provide the ability to dynamically adapt and subsequently process unstructured data. The AI models used in this area are based on machine learning, specifically on natural language processing (NLP), which has laid the foundations for advanced web scraping techniques in various sectors, including e-commerce, market research, and news media.
+
+Frameworks such as PyTorch, Hugging Face, LangChain, and DSPy enable the development of sophisticated AI models and agents for web scraping, while tools like Playwright and Beautiful Soup provide a robust foundation for data extraction, including from dynamic, JavaScript-heavy sites. New tools for preprocessing web pages, such as Jina Reader, FireCrawl, or Crawl4AI, extend the possibilities of web scraping for use in combination with LLMs.
+
+Analyze these technologies and compare their ecosystems from the perspective of both developers and end users. Also compare these tools in terms of their capabilities and accuracy in data extraction. Propose and implement an AI-powered web scraping tool that uses the latest technologies in the field of machine learning. Discuss how this approach differs from traditional web scraping methods. Finally, evaluate the tool you have implemented in terms of accuracy, scalability, and its ability to process dynamic web content from different domains.
 
 
 
@@ -80,149 +84,79 @@ Analyzujte tieto technológie a porovnajte ich ekosystémy z pohľadu vývojára
 
 \section{Related work}
 
-Classical web crawling research has focused on scalable architectures, politeness, and efficient coverage of large link graphs. Early work on parallel and distributed crawlers introduced partitioning strategies such as domain-based sharding and seed–client architectures to balance load across machines and reduce duplication \cite{gupta2014webparf, mukhopadhyay2011websailor, yadav2012incrementalcrawler, boldi2014bubing}. These systems typically relied on link-based or simple lexical heuristics (for example, PageRank-like scores, indegree, or URL patterns) to prioritise which pages to visit next. Comprehensive surveys such as \cite{olston2010webcrawling} formalised key design dimensions, including frontier management, politeness, and freshness.
+Classical web crawling research has focused on scalable architectures, politeness, and efficient coverage of large link graphs. Early parallel and distributed crawlers introduced partitioning strategies such as domain-based sharding and seed–client architectures to balance load and reduce duplication, typically using link-based or simple lexical heuristics (for example, PageRank-like scores, indegree, or URL patterns) to prioritize pages \cite{gupta2014webparf, mukhopadhyay2011websailor, yadav2012incrementalcrawler, boldi2014bubing, olston2010webcrawling}.
 
-Building on these foundations, focused and semantic crawlers aim to concentrate the crawl budget on pages relevant to a specific topic. Semantic crawling approaches use named entity recognition and other natural language processing techniques to filter and prioritise pages whose content matches the target concepts, significantly reducing the number of irrelevant documents \cite{dipietro2014semanticcrawling}. Domain-specific focused crawlers, such as ThreatCrawl for cyber threat intelligence, leverage contextual embeddings and similarity-based scoring to steer the crawl toward high-value documents within a bounded domain \cite{kuehn2023threatcrawl}. These methods demonstrate that semantic signals can substantially improve the efficiency of web crawling compared to purely link-based strategies.
+Focused and semantic crawlers concentrate the crawl budget on topic-relevant pages. They rely on natural language processing techniques such as named entity recognition and contextual embeddings to filter and prioritize content, substantially reducing the number of irrelevant documents and improving efficiency compared to purely link-based strategies \cite{dipietro2014semanticcrawling, kuehn2023threatcrawl}. Neural and LLM-guided scoring methods further estimate semantic quality or potential relevance using learned quality estimators, enabling crawlers to visit high-yield pages earlier and to prune low-quality content \cite{pezzuti2025neuralprioritization, kong2024lmds, chang2024neuralpassage}.
 
-More recently, neural and LLM-guided scoring methods have been proposed to prioritise pages and filter large corpora. Neural prioritisation models estimate the semantic quality or potential relevance of web pages using learned quality estimators, enabling crawlers to visit high-yield pages earlier in the process \cite{pezzuti2025neuralprioritisation}. Large language model-guided document selection frameworks, such as LMDS, use a strong LLM to label documents as educational or useful and then distil these labels into a smaller model that can filter massive corpora at scale \cite{kong2024lmds}. Complementary work on neural passage quality estimation shows how static pruning based on quality scores can reduce index size while preserving retrieval effectiveness \cite{chang2024neuralpassage}. These lines of work provide powerful tools for quality-aware data selection but are usually applied offline, after the crawling phase.
+In parallel, LLM-based web agents and multi-agent architectures operate directly in real-world web environments. Systems such as DeepResearcher, WebSailor, and WebResearcher train or evaluate LLM agents that use tool calls (for example, web search and browsing) to answer complex queries over the open web, often combining multi-step reasoning, specialized agents that critique each other, and reinforcement learning guided by outcome-based rewards and LLM-as-a-Judge signals \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. These systems, however, typically rely on external search APIs or generic browsing interfaces rather than exposing a dedicated focused crawling layer with explicit information retrieval metrics. Practical frameworks such as LangChain, DSPy, FireCrawl, Crawl4AI, and Playwright-based tooling illustrate an emerging ecosystem of LLM-centric web scraping and orchestration libraries; the thesis will draw on these tools when analyzing related work and designing baselines.
 
-At the same time, there is growing interest in LLM-based web agents and multi-agent architectures that operate directly in real-world web environments. Systems such as DeepResearcher, WebSailor, and WebResearcher train or evaluate LLM agents that use tool calls (for example, web search and web browsing) to answer complex queries over the open web \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. These agents often employ multi-step reasoning patterns and, in some cases, multi-agent setups where specialised agents critique or refine each other’s outputs. Reinforcement learning is used to optimise long-horizon behaviour based on outcome-based rewards, sometimes combined with rejection-sampling fine-tuning and LLM-as-a-Judge signals to evaluate trajectories. However, these systems typically rely on external search APIs or generic browsing rather than exposing a dedicated, reusable focused crawling layer with explicit information retrieval metrics.
-
-Across both crawling and web-agent literature, evaluation relies on a mixture of crawling-specific and retrieval metrics. Harvest rate and related measures quantify how efficiently a focused crawler discovers relevant documents under a fixed budget, while ranking metrics such as nDCG, MAP, and MRR assess the quality of document ordering for retrieval tasks. Recent work on neural prioritisation and quality estimation explicitly studies the trade-off between early-yield performance (for example, harvest rate or maxNDCG) and overall coverage \cite{pezzuti2025neuralprioritisation}. In deep research settings, answer quality is often measured using a combination of automatic metrics (for example, F1 or BLEU-1) and LLM-as-a-Judge evaluations of correctness, relevance, and faithfulness.
-
-The proposed thesis situates itself at the intersection of these lines of work. It builds on classical and semantic focused crawling, neural quality estimation, and LLM-based web agents, but shifts the emphasis toward an integrated architecture where multi-agent exploration, LLM-based reviewing, and (optionally) reinforcement learning are used to drive the crawling, validation, and ranking loop itself, targeted at downstream RAG or deep-research use cases in a bounded domain.
+The proposed thesis builds on this literature by combining focused and semantic crawling, neural quality estimation, and LLM-based web agents within a single architecture where multi-agent exploration, LLM-based reviewing, and (optionally) reinforcement learning jointly drive crawling, validation, and ranking for bounded-domain RAG applications.
 
 \section{Research target}
 
-The starting point of this thesis is the observation that large language models (LLMs) require timely, high-quality training and retrieval data, while most up-to-date information is scattered across the open web in heterogeneous HTML, APIs, and document formats. Classical web crawling and scraping pipelines have focused primarily on coverage, politeness, and freshness, often guided by link-based or lexical heuristics such as PageRank-like scores or URL patterns \cite{gupta2014webparf, mukhopadhyay2011websailor, olston2010webcrawling}. More recent work has introduced semantic and domain-specific focused crawling, for example using named entity recognition or contextual embeddings to steer the crawler toward relevant pages \cite{dipietro2014semanticcrawling, kuehn2023threatcrawl}. In parallel, LLM-guided document selection and neural quality estimation have emerged as powerful tools for filtering large corpora and pruning low-quality content before model training or retrieval \cite{pezzuti2025neuralprioritisation, kong2024lmds, chang2024neuralpassage}.
+The starting point of this thesis is the observation that large language models (LLMs) require timely, high-quality training and retrieval data, while most up-to-date information is scattered across heterogeneous web content such as HTML pages, APIs, and documents. Existing crawling and scraping pipelines prioritize coverage, politeness, and freshness, often guided by link-based or lexical heuristics, whereas recent research has introduced semantic and domain-specific focused crawling and LLM-guided document selection to better target relevant, high-quality content \cite{gupta2014webparf, mukhopadhyay2011websailor, olston2010webcrawling, dipietro2014semanticcrawling, kuehn2023threatcrawl, pezzuti2025neuralprioritization, kong2024lmds, chang2024neuralpassage}.
 
-Despite these advances, existing systems typically treat crawling, document quality estimation, and downstream retrieval-augmented generation (RAG) as loosely coupled components. Focused crawlers optimise harvest rate and ranking metrics on a static or slowly evolving link graph. LLM-guided document selection is usually applied offline to an already collected corpus. Emerging deep research agents operate on top of search APIs and ad-hoc browsing, but rarely expose a reusable crawling and indexing layer with explicit information retrieval (IR) metrics and data quality controls \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. There is limited empirical evidence on how LLM-based critics, multi-agent exploration, and reinforcement learning (RL) can be combined to improve both the quality of a domain-specific corpus and the performance of RAG systems built on top of it.
+Despite these advances, crawling, document quality estimation, and retrieval-augmented generation (RAG) are still usually treated as loosely coupled components. Focused crawlers optimize harvest rate and ranking metrics on a static or slowly evolving link graph, while LLM-guided data selection is typically applied offline to an already collected corpus. Deep research agents operate on top of search APIs and ad-hoc browsing, but rarely expose a reusable crawling and indexing layer with explicit information retrieval (IR) metrics and data quality controls \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. There is limited empirical evidence on how LLM-based critics, multi-agent exploration, and reinforcement learning (RL) can be combined to improve both the quality of a domain-specific corpus and the performance of RAG systems built on top of it.
 
-The goal of this thesis is to design and evaluate a multi-agent, LLM-assisted semantic crawling system that uses LLMs as critics of data quality and relevance. The system will operate in a bounded domain (for example, a focused set of technical or scientific websites) and will act as a retrieval layer for a downstream RAG or deep-research application. Several researcher agents will explore the web in parallel using different strategies, while reviewer agents---implemented as LLM-based critics---score candidate documents for relevance, quality, recency, and usefulness. These scores will drive both the prioritisation of further crawling and the ranking of documents in the index. RL will be investigated as a mechanism for adapting crawling and query strategies based on reviewer feedback and downstream RAG performance.
+The main objective of this thesis is to design, implement, and evaluate a multi-agent, LLM-assisted semantic crawling system that uses LLMs as critics of data quality and relevance. The system will operate in a bounded domain (for example, a focused set of technical or scientific websites) and will act as a retrieval layer for a downstream RAG or deep-research application. Several researcher agents will explore the web in parallel using different strategies, while reviewer agents---implemented as LLM-based critics---score candidate documents for relevance, quality, recency, and usefulness. These scores will drive both the prioritization of further crawling and the ranking of documents in the index. RL will be explored, if feasible, as an optional mechanism for adapting crawling and query strategies based on reviewer feedback and downstream RAG performance.
 
 \subsection{Problem statement and research gap}
 
-Current web crawling pipelines are typically optimised for large-scale indexing and generic search, not for targeted, domain-specific deep research. They rely on homogeneous heuristics for link prioritisation and treat document validation as a separate filtering step. At the same time, LLM-based evaluation and LLM-as-a-Judge techniques have shown promise for assessing document quality and answer correctness, but are rarely used as first-class signals in the crawling and ranking loop itself \cite{pezzuti2025neuralprioritisation, kong2024lmds}. Multi-agent architectures and RL-based web agents further demonstrate that diverse strategies and outcome-based rewards can improve long-horizon reasoning on the web \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}, yet they typically operate on top of external search services rather than controlling the underlying focused crawler.
-
-This creates a research gap for architectures that explicitly integrate:
+Current web crawling pipelines are typically optimized for large-scale indexing and generic search, not for targeted, domain-specific deep research. They rely on homogeneous heuristics for link prioritization and treat document validation as a separate filtering step. At the same time, LLM-based evaluation and LLM-as-a-Judge techniques have shown promise for assessing document quality and answer correctness, but are rarely used as first-class signals in the crawling and ranking loop itself \cite{pezzuti2025neuralprioritization, kong2024lmds}. Multi-agent architectures and RL-based web agents further demonstrate that diverse strategies and outcome-based rewards can improve long-horizon reasoning on the web \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}, yet they typically operate on top of external search services rather than controlling the underlying focused crawler. This creates a research gap for architectures that explicitly integrate:
 \begin{itemize}
-    \item semantic and LLM-aware focused crawling, including neural prioritisation and domain-specific relevance estimation;
-    \item LLM-based reviewers that act as critics of document quality and as sources of reward signals for RL policies; and
-    \item multi-agent exploration strategies that trade off breadth, depth, and diversity under a constrained crawl budget.
+	    \item semantic and LLM-aware focused crawling, including neural prioritization and domain-specific relevance estimation;
+	    \item LLM-based reviewers that act as critics of document quality and as sources of reward signals for RL policies; and
+	    \item multi-agent exploration strategies that trade off breadth, depth, and diversity under a constrained crawl budget.
 \end{itemize}
-The thesis aims to investigate whether such an integrated architecture can measurably improve harvest rate and ranking quality during early crawling, as well as the robustness and factual accuracy of downstream RAG answers, compared to strong non-agentic and non-LLM baselines.
+The thesis will investigate whether such an integrated architecture can measurably improve harvest rate and ranking quality during early crawling, as well as the robustness and factual accuracy of downstream RAG answers, compared to strong non-agentic and non-LLM baselines.
 
 \subsection{Main objective}
 
-The main objective of this thesis is to design, implement, and empirically evaluate a multi-agent, LLM-assisted semantic crawling framework that:
-\begin{itemize}
-    \item combines focused crawling with LLM-based document validation and scoring;
-    \item uses reviewer agents both as semantic filters and as critics providing structured feedback; and
-    \item optionally applies RL to adapt crawling and query strategies to improve data quality and downstream RAG performance.
-\end{itemize}
-The framework should be reusable for future research on LLM-based web agents and RAG-aware crawling in similar bounded domains.
+The main objective of this thesis is to design, implement, and empirically evaluate a reusable multi-agent, LLM-assisted semantic crawling framework for a bounded web domain that serves as a retrieval layer for retrieval-augmented generation (RAG) applications. The framework is intended to be reusable for future research on LLM-based web agents and RAG-aware crawling in similar bounded domains.
 
 \subsection{Research questions}
 
-To achieve this objective, the thesis will address the following research questions:
+To achieve this objective, the thesis will address the following research questions and exploratory objectives:
 \begin{itemize}
-    \item \textbf{RQ1 -- LLM-based versus traditional scoring:} How does LLM-based document quality and relevance scoring, inspired by LLM-guided data selection and LLM-as-a-Judge techniques, compare to traditional and embedding-based scoring for focused crawling and RAG retrieval in terms of harvest rate, ranking quality (for example nDCG and MAP), and downstream answer quality?
-    \item \textbf{RQ2 -- Multi-agent researcher and reviewer architecture:} Can a multi-agent setup with multiple researcher agents and reviewer agents (LLM critics) discover a more diverse and higher-quality set of documents than a single crawler or single-agent baseline under the same resource budget? How does inter-agent feedback and sharing of high-value hubs influence performance?
-    \item \textbf{RQ3 -- RL-guided navigation and strategy adaptation:} Does applying RL over crawling actions and query refinement---such as link selection, source selection, and depth-versus-breadth trade-offs---improve early harvest rate and RAG performance compared to hand-designed heuristics and static policies?
-    \item \textbf{RQ4 -- Reliability of LLM-based validation:} How reliable are LLM-as-a-Judge signals (relevance, factuality, recency, usefulness) when used both for ranking and as RL rewards, compared to human annotations and traditional IR metrics? Under what conditions do these signals introduce bias or instability into the crawling and retrieval pipeline?
+    \item \textbf{RQ1 -- LLM-based versus traditional scoring:} How does LLM-based document quality and relevance scoring compare to traditional and embedding-based scoring for focused crawling and RAG retrieval in terms of crawling efficiency, ranking quality, and downstream answer quality?
+    \item \textbf{RQ2 -- Multi-agent researcher and reviewer architecture:} Can a multi-agent setup with multiple researcher and reviewer agents (LLM critics) discover a more diverse and higher-quality set of documents than a single crawler or single-agent baseline under the same resource budget, and how does inter-agent feedback and sharing of high-value hubs influence performance?
+	    \item \textbf{Exploratory objective -- RL-guided navigation and strategy adaptation (optional):} Explore whether applying RL over high-level crawling and query actions (for example, link and source selection, depth-versus-breadth trade-offs) improves early harvest rate and RAG performance compared to hand-designed heuristics within the time and computational constraints of the thesis.
+	    \item \textbf{RQ3 -- Reliability of LLM-based validation:} How reliable are LLM-as-a-Judge signals (relevance, factuality, recency, usefulness) when used for ranking and, where RL is applied, as rewards compared to human annotations and traditional IR metrics, and under what conditions do these signals introduce bias or instability into the crawling and retrieval pipeline?
 \end{itemize}
 
 \subsection{Scope and feasibility}
 
-The thesis will focus on a single, well-defined domain and a limited set of crawling and agent policies to keep the project feasible. Existing LLMs and embedding models will be reused rather than trained from scratch. The experimental setup will prioritise clear, reproducible metrics and ablation studies over exhaustive exploration of algorithmic variants. RL experiments will concentrate on one or two representative formulations that can be evaluated within the time and computational constraints of a master thesis.
+The thesis will focus on a single, well-defined domain and a limited set of crawling and agent policies to keep the project feasible. Existing LLMs and embedding models will be reused rather than trained from scratch, and the experimental setup will prioritize clear, reproducible metrics and ablation studies over exhaustive exploration of algorithmic variants.
 
 \subsection{Expected contributions}
 
 The expected contributions of this thesis are:
 \begin{itemize}
     \item a prototype architecture for multi-agent, LLM-assisted semantic crawling with integrated reviewer agents and optional RL-guided navigation;
-    \item an empirical comparison of LLM-based document scoring against neural quality estimators, embedding-based similarity, and traditional IR baselines within a focused crawling pipeline;
-    \item experimental evidence on the impact of multi-agent exploration and RL adaptation on harvest rate, ranking quality, corpus freshness, and downstream RAG answer quality; and
-    \item a reusable experimental framework (code, configuration, and evaluation scripts) that can support future work on deep research agents and RAG-aware crawling.
+	    \item an empirical comparison of LLM-based document scoring against neural quality estimators, embedding-based similarity, and traditional IR baselines within a focused crawling pipeline;
+	    \item experimental evidence on the impact of multi-agent exploration and, where implemented, RL-based adaptation on harvest rate, ranking quality, corpus freshness, and downstream RAG answer quality; and
+	    \item a reusable experimental framework (code, configuration, and evaluation scripts) that can support future work on deep research agents and RAG-aware crawling.
 \end{itemize}
 
 \section{Methodology}
 
-This section describes the research design, implementation steps, and evaluation protocol used to investigate the research questions defined in the previous section. The methodology follows a design-science and experimental approach: a prototype multi-agent, LLM-assisted semantic crawler is iteratively developed and evaluated against strong baselines on a bounded web domain.
+The methodology follows a design-science and experimental approach in which a prototype multi-agent, LLM-assisted semantic crawler is iteratively developed and evaluated against strong baselines on a bounded web domain.
 
 \subsection{Overall research design}
 
-The work is organised into the following phases:
+The work is organized into the following phases:
 \begin{enumerate}
-    \item \textbf{Domain selection and problem specification:} choose a bounded, technically oriented domain (for example, a subset of cyber threat intelligence sources or scientific websites), define information needs, and formulate representative user queries.
-    \item \textbf{Baseline crawling and retrieval pipeline:} implement a focused crawler with traditional or embedding-based scoring and a retrieval-augmented generation (RAG) pipeline that uses the collected corpus.
-    \item \textbf{LLM-based validation and scoring:} add LLM-based reviewers that assess document quality and relevance, and optionally distil their judgements into a cheaper quality estimator.
-    \item \textbf{Multi-agent architecture:} extend the baseline into a multi-agent system with several researcher agents and reviewer agents sharing a common index and feedback channels.
-    \item \textbf{RL-guided policy (optional):} explore reinforcement learning for adapting crawling and query strategies based on reviewer feedback and downstream performance.
-    \item \textbf{Evaluation and ablation studies:} systematically compare system variants using crawling, ranking, and RAG metrics.
+    \item \textbf{Domain selection and ground truth:} choose a bounded, technically oriented domain (for example, a subset of cyber threat intelligence sources or scientific websites), define information needs and representative queries, and construct a small gold-standard set of manually labelled documents used for hyper-parameter tuning and supervised metrics. Where the domain relies heavily on client-side rendering or dynamic content, incorporate browser-based scraping tools (for example, Playwright) to capture rendered HTML.
+    \item \textbf{Baseline crawling and retrieval pipeline:} implement a focused crawler with traditional or embedding-based scoring that collects and parses pages into passages using standard HTML parsing and boilerplate removal, and build a retrieval-augmented generation (RAG) pipeline on top of a vector index to provide the main non-LLM and non-agentic baseline.
+    \item \textbf{LLM-based validation and scoring:} design reviewer prompts so that a strong LLM scores documents along relevance, quality, recency, and factuality; combine these into a single quality score and, where feasible, distil them into a cheaper classifier or regressor used during online crawling.
+    \item \textbf{Multi-agent architecture:} extend the baseline into a system with several researcher agents that propose crawling actions and reviewer agents that apply LLM-based evaluation, coordinated through a shared frontier and index.
+    \item \textbf{RL-guided policy (optional):} if resources allow, model high-level strategy adaptation as a reinforcement learning problem with compact state features summarizing crawler behavior, actions over link and source selection and exploration parameters, and rewards combining reviewer scores, crawling metrics, and RAG performance.
+    \item \textbf{Evaluation and ablation studies:} compare system variants under controlled crawl budgets using crawling, ranking, and RAG metrics, and perform ablation studies to isolate the contribution of LLM-based scoring, multi-agent exploration, and any RL-based adaptation.
 \end{enumerate}
-
-\subsection{Domain selection and ground truth}
-
-First, a concrete domain is selected in consultation with the supervisor to keep the web surface and annotation effort manageable. The domain is defined as a set of seed websites and, if applicable, query templates. From this domain:
-\begin{itemize}
-    \item a seed set of URLs is curated manually;
-    \item a set of user-style queries is designed to reflect the intended deep-research or RAG use-cases; and
-    \item a small gold-standard set of documents is created by manually labelling sampled pages as relevant or non-relevant to selected queries.
-\end{itemize}
-The gold-standard set is used both to tune hyperparameters and to compute supervised metrics (for example, harvest rate and ranking quality) on held-out test data.
-
-\subsection{Baseline crawling and retrieval pipeline}
-
-The baseline system consists of a focused crawler and a retrieval pipeline:
-\begin{itemize}
-    \item \textbf{Focused crawler:} a crawler with a priority frontier is implemented, following standard design principles for politeness and parallelism \cite{gupta2014webparf, mukhopadhyay2011websailor, yadav2012incrementalcrawler, boldi2014bubing, olston2010webcrawling}. Pages are fetched up to a fixed budget, parsed into text (for example, with boilerplate removal), and stored together with their link structure.
-    \item \textbf{Semantic scoring:} as a strong non-LLM baseline, each page is embedded using a sentence or document encoder; similarity to query or topic representations is used to prioritise links and rank documents, inspired by semantic focused crawlers such as ThreatCrawl and related work on contextual embeddings \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling}.
-    \item \textbf{Indexing and RAG:} the collected pages are segmented into passages, indexed in a vector store, and used as a retrieval layer for an LLM-based answer generator. For each query, the system retrieves the top-$k$ passages and produces an answer; this baseline is used to measure downstream RAG performance without LLM-based critics in the crawling loop.
-\end{itemize}
-
-\subsection{LLM-based validation and scoring}
-
-In the second phase, LLM-based reviewers are introduced as critics of data quality and relevance:
-\begin{itemize}
-    \item A review prompt is designed so that a strong LLM evaluates each document (or passage) along several dimensions, such as topical relevance, educational value, recency, and factuality, returning both discrete labels and scalar scores.
-    \item These scores are combined into a single document quality score that can be used to reprioritise the crawl frontier and to filter or re-rank documents in the index, in the spirit of neural prioritisation and LLM-guided data selection \cite{pezzuti2025neuralprioritisation, kong2024lmds, chang2024neuralpassage}.
-    \item To reduce inference cost, a smaller classifier or regressor is trained on a subset of LLM-labelled documents, following a distillation pattern similar to LMDS \cite{kong2024lmds}. During online crawling, this smaller model approximates the reviewer scores for most pages, while the full LLM is reserved for evaluation and periodic calibration.
-\end{itemize}
-The effect of introducing LLM-based scoring is measured by comparing crawling efficiency and RAG performance against the baseline.
-
-\subsection{Multi-agent crawling architecture}
-
-Next, the system is extended into a multi-agent architecture inspired by recent deep research agents \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. The architecture comprises:
-\begin{itemize}
-    \item several \emph{researcher agents} that propose crawling actions (for example, selecting which links or sources to explore next) based on their individual strategies and local views of the corpus; and
-    \item one or more \emph{reviewer agents} that consume candidate documents, apply LLM-based evaluation, and return structured feedback and scores.
-\end{itemize}
-A lightweight coordinator maintains a shared frontier and index, aggregates reviewer feedback, and redistributes crawl budget across agents. Experiments compare single-agent and multi-agent configurations to assess the impact on diversity and quality of discovered documents.
-
-\subsection{RL-guided strategy adaptation (optional)}
-
-If time and resources permit, reinforcement learning is explored to adapt crawling and query strategies:
-\begin{itemize}
-    \item \textbf{State:} compact features summarising recent crawler behaviour (for example, distribution of reviewer scores, coverage of domains, depth statistics) and query context.
-    \item \textbf{Actions:} high-level decisions such as choosing which subset of sources to prioritise, selecting an agent strategy, or adjusting exploration versus exploitation parameters.
-    \item \textbf{Reward:} a weighted combination of reviewer scores, improvements in harvest rate and ranking metrics, and RAG answer quality on a held-out query set.
-\end{itemize}
-Initial policies are hand-crafted and then refined using offline or online RL on logged trajectories. To reduce instability, techniques inspired by rejection-sampling fine-tuning and LLM-as-a-Judge are considered when filtering trajectories \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. If RL proves infeasible within the thesis constraints, the multi-agent heuristic policies still provide valuable insights.
-
-\subsection{Experimental protocol}
-
-Throughout all phases, experiments are conducted under controlled budgets (for example, fixed numbers of pages fetched or requests issued). The main comparisons include:
-\begin{itemize}
-    \item baseline semantic crawler versus crawler with LLM-based scoring;
-    \item single-agent versus multi-agent architectures; and
-    \item heuristic policies versus any RL-enhanced policies (if implemented).
-    \end{itemize}
-For each configuration, the thesis will record crawling metrics (such as harvest rate and early-yield effectiveness), ranking metrics (for example, nDCG and MAP on labelled subsets), and RAG answer quality metrics, following the evaluation design outlined in the next section.
 
 \section{Evaluation}
 
-This section defines how the proposed system will be evaluated with respect to the research questions. The evaluation focuses on three aspects: (i) crawling efficiency and coverage, (ii) retrieval and ranking quality, and (iii) downstream RAG answer quality. All experiments compare the proposed system against well-defined baselines under matched resource budgets.
+Evaluation focuses on three aspects: (i) crawling efficiency and coverage, (ii) retrieval and ranking quality, and (iii) downstream RAG answer quality. All experiments compare the proposed system against well-defined baselines under matched resource budgets, and report basic scalability indicators such as how performance and resource usage change with increasing crawl budget or domain size.
 
 \subsection{Evaluation objectives and baselines}
 
@@ -230,13 +164,13 @@ The main evaluation objectives are:
 \begin{itemize}
     \item quantify how LLM-based document scoring affects crawling efficiency and ranking quality compared to traditional or embedding-based scoring (RQ1);
     \item measure the impact of the multi-agent architecture on the diversity and quality of discovered documents (RQ2);
-    \item assess whether RL-guided strategies, if implemented, improve early-yield effectiveness and RAG performance over hand-crafted policies (RQ3); and
-    \item evaluate the reliability and stability of LLM-based judgements used as ranking and reward signals (RQ4).
+    \item evaluate the reliability and stability of LLM-based judgements used as ranking signals and, where RL is applied, as reward signals (RQ3); and
+    \item as an exploratory objective, assess whether RL-guided strategies, if implemented, improve early-yield effectiveness and RAG performance over hand-crafted policies.
 \end{itemize}
 To address these objectives, the following system variants will be compared:
 \begin{enumerate}
     \item a \emph{baseline semantic crawler} with embedding-based scoring and no LLM reviewers;
-    \item a \emph{single-agent crawler with LLM-based scoring}, where reviewer scores influence frontier prioritisation and index filtering;
+    \item a \emph{single-agent crawler with LLM-based scoring}, where reviewer scores influence frontier prioritization and index filtering;
     \item a \emph{multi-agent crawler} with multiple researcher and reviewer agents sharing a common index and feedback channels; and
     \item optionally, an \emph{RL-enhanced multi-agent system}, where a learned policy adapts high-level strategies.
 \end{enumerate}
@@ -244,7 +178,7 @@ All configurations use the same domain, seed set, and crawling budget, and they 
 
 \subsection{Crawling metrics}
 
-To evaluate crawling efficiency and coverage, the thesis will use metrics inspired by focused crawling and neural prioritisation research \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling, pezzuti2025neuralprioritisation}:
+To evaluate crawling efficiency and coverage, the thesis will use metrics inspired by focused crawling and neural prioritization research \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling, pezzuti2025neuralprioritization}:
 \begin{itemize}
     \item \textbf{Harvest rate (HR):} the proportion of fetched documents that are labelled as relevant in the gold-standard set. HR is computed cumulatively as a function of the number of pages fetched, emphasising early-yield performance.
     \item \textbf{Relevant documents found at budget $B$:} the absolute number of relevant documents discovered within a fixed crawl budget (for example, after $B$ pages), which reflects how efficiently a variant uses its resources.
@@ -257,7 +191,7 @@ Relevance labels for HR and related quantities are obtained from the manually an
 
 Retrieval and ranking quality are assessed on a held-out query set with document-level or passage-level relevance labels. The main metrics are:
 \begin{itemize}
-    \item \textbf{nDCG@k:} normalised discounted cumulative gain at cut-off $k$, which captures both relevance and rank position and is widely used in information retrieval and focused crawling evaluation \cite{pezzuti2025neuralprioritisation};
+    \item \textbf{nDCG@k:} normalized discounted cumulative gain at cut-off $k$, which captures both relevance and rank position and is widely used in information retrieval and focused crawling evaluation \cite{pezzuti2025neuralprioritization};
     \item \textbf{MAP@k and MRR:} mean average precision and mean reciprocal rank at cut-off $k$, reflecting early precision and the ability to place at least one relevant item near the top of the ranking; and
     \item \textbf{Recall@k:} the fraction of all relevant documents for a query that appear within the top-$k$ retrieved items, indicating how much of the relevant corpus the system can surface.
 \end{itemize}
