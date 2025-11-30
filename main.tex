@@ -118,7 +118,7 @@ To realize this goal, the thesis will address the following research questions:
 
 \subsection{Scope and contributions}
 
-The thesis will focus on a small number of representative HTML extraction tasks in one or two domains (for example, product pages and documentation or course catalogues), each with a clearly defined JSON schema. Existing 7--8B open-source models will be used as local bases and adapted via parameter-efficient methods and lightweight quantization rather than full-model retraining. A small set of strong cloud LLMs will serve as black-box baselines and teachers for synthetic data generation and distillation, with costs kept manageable by limiting the number of calls and models.
+The thesis will focus on a limited set of representative HTML-centric extraction tasks across one or more domains, each with a clearly specified structured target representation (for example, JSON records, key--value lists, or tabular rows). Existing 7--8B open-source models will be used as local bases and adapted via parameter-efficient methods and lightweight quantization rather than full-model retraining. A small set of strong cloud LLMs will serve as black-box baselines and teachers for synthetic data generation and distillation, with costs kept manageable by limiting the number of calls and models.
 
 Within this scope, the thesis aims to contribute:
 \begin{itemize}
@@ -134,7 +134,7 @@ The methodology follows a design-science and experimental approach. A structure-
 
 \subsection{Experimental design}
 
-The experiments will be instantiated on one or two concrete HTML extraction tasks, each defined by a target JSON schema (for example, product attributes or course metadata). HTML pages for the chosen domains will be collected with standard scraping tools such as Playwright-based crawlers, then parsed into DOM trees. Candidate subtrees around relevant content will be extracted and linearized using different structure-aware preprocessing strategies inspired by DOM-LM, WebFormer, HySem, and structurization techniques \cite{deng2022domlm, wang2022webformer, narayanan2024hysem, liu2024structurization}. Labeled examples will be created by combining teacher-LM annotations with manual corrections and targeted synthetic augmentation \cite{kaddour2023syntheticdata, ziegler2024craft, muller2025datacentric}.
+The concrete experimental setup will be determined after an initial analysis of the problem space and small-scale pilot experiments. The work is expected to cover a small suite of HTML-centric extraction tasks that differ in domain, page structure, and target output format. For each task, the desired structured output (for example, JSON objects, key--value records, or rows in a logical table) will be specified explicitly. HTML pages for the chosen domains will be collected with standard scraping tools such as Playwright-based crawlers, then parsed into DOM trees. Depending on the task, candidate subtrees around relevant content will be extracted and linearized using structure-aware preprocessing strategies inspired by DOM-LM, WebFormer, HySem, and structurization techniques \cite{deng2022domlm, wang2022webformer, narayanan2024hysem, liu2024structurization}. Labeled examples will be created by combining teacher-LM or rule-based annotations with manual corrections and targeted synthetic augmentation \cite{kaddour2023syntheticdata, ziegler2024craft, muller2025datacentric}.
 
 For each task, the thesis will compare three main model configurations:
 \begin{itemize}
@@ -145,15 +145,14 @@ For each task, the thesis will compare three main model configurations:
 
 \subsection{Evaluation}
 
-All models will be evaluated on the same held-out test sets and on the same edge device when applicable. The evaluation will focus on three aspects:
+Where feasible, models will be evaluated on shared held-out test sets and run on the same edge device to enable fair comparisons, while allowing for task- or hardware-specific adjustments where necessary. The evaluation is expected to focus on three main aspects:
 \begin{itemize}
-    \item \textbf{Extraction quality:} field-level precision, recall, and F1; exact-match accuracy of JSON objects; and, where relevant, simple domain-specific measures (for example, numeric error on prices or date fields).
-    \item \textbf{Structured-output robustness:} fraction of outputs that are syntactically valid JSON and conform to the expected schema (correct types and required fields), with error categories inspired by prior work on structured-output robustness \cite{neveditsin2025structuredoutput}.
-    \item \textbf{Efficiency and resource usage:} latency per page, throughput under batch workloads, memory footprint (including adapter and quantization configurations), and simple compute or energy proxies following SLM-Bench-style reporting \cite{pham2025slmbench}.
+    \item \textbf{Extraction quality:} field-level precision, recall, and F1; exact-match or schema-level accuracy for structured outputs; and, where relevant, simple domain-specific measures (for example, numeric error on prices or date fields).
+    \item \textbf{Structured-output robustness:} fraction of outputs that are syntactically valid and conform to the expected schema or type constraints (for example, valid JSON with required fields), with error categories inspired by prior work on structured-output robustness \cite{neveditsin2025structuredoutput}.
+    \item \textbf{Efficiency and resource usage:} latency per page, throughput under batch workloads, memory footprint (including adapter and quantization configurations), and simple compute or energy proxies following SLM-Bench-style reporting \cite{pham2025slmbench}; the exact choice of efficiency indicators may be refined based on profiling during development.
 \end{itemize}
 
-Simple ablation experiments will remove individual components, such as structure-aware preprocessing or fine-tuning, to isolate their contributions to quality and efficiency. Where practical, results will be averaged over multiple runs or seeds, and basic confidence intervals will be reported for key comparisons.
+Simple ablation experiments will remove individual components, such as structure-aware preprocessing or fine-tuning, to isolate their contributions to quality and efficiency. The exact set of ablations will be selected once the most influential components are identified during experimentation. Where practical, results will be averaged over multiple runs or seeds, and basic confidence intervals will be reported for key comparisons.
 
 \printbibliography
 \end{document}
-
