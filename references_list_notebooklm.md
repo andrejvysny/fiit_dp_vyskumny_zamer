@@ -1,5 +1,3 @@
-Na základe celého obsahu, ktorý bol k dispozícii v jednotlivých dokumentoch, nasleduje tabuľka so súhrnmi. Ak dokument obsahoval len referencie, alebo neposkytoval dostatok kontextu na vytvorenie súhrnu, jeho zhrnutie je ponechané prázdne, no napriek tomu je zahrnutý v tabuľke.
-
 | Názov súboru | Prehľad obsahu dokumentu |
 | :--- | :--- |
 | **1406.5690v1.pdf** | Prázdny (Obsahuje len referencie). |
@@ -45,9 +43,9 @@ Na základe celého obsahu, ktorý bol k dispozícii v jednotlivých dokumentoch
 | **2025.acl-srw.19.pdf** | Evaluates small LMs formatting attribute-value extractions from clinical notes; JSON parses best, while targeted prompting improves robustness but long inputs hurt structure. |
 | **2107.06955.pdfv1.pdf** | HTLM pretrains on simplified HTML with denoising, leveraging markup semantics to beat text-only LMs on zero-shot prompting and summarization. |
 | **2201.10608.pdfv1.pdf** | DOM-LM jointly encodes text and DOM trees for webpages, delivering better attribute extraction, OIE, and QA generalization. |
-| **2201.10608.pdfv1 (1).pdf** | Duplicate copy of DOM-LM; same HTML+DOM representation learning approach. |
+| **2201.10608.pdfv1 (1).pdf** | Duplicate of DOM-LM (same content as 2201.10608.pdfv1.pdf). |
 | **2202.00217.pdfv1.pdf** | WebFormer introduces HTML tokens with graph attention and layout-aware patterns for structured field extraction, outperforming prior baselines. |
-| **2202.00217.pdfv1 (1).pdf** | Duplicate of WebFormer; same transformer architecture for structured web extraction. |
+| **2202.00217.pdfv1 (1).pdf** | Duplicate of WebFormer (same content as 2202.00217.pdfv1.pdf). |
 | **2210.03347v2.pdf** | Pix2Struct pretrains an image-to-text model to emit simplified HTML from masked screenshots, reaching SOTA across doc, UI, and vision-language tasks. |
 | **2307.12856v4.pdf** | WebAgent combines planning, long-HTML summarization, and code execution (Flan-U-PaLM + HTML-T5) to boost real-site task success. |
 | **2309.11042.pdfv1.pdf** | ALTER adds mixture-of-task adapters to small LMs with two-stage training, enabling efficient multi-task learning. |
@@ -57,9 +55,9 @@ Na základe celého obsahu, ktorý bol k dispozícii v jednotlivých dokumentoch
 | **2402.14129.pdfv1.pdf** | GraphScholarBERT fuses graph and language encoders for zero-shot relation extraction on semi-structured web pages. |
 | **2403.07384v2.pdf** | S2L clusters small-model loss trajectories to select fine-tuning subsets, matching full-data performance with far less data. |
 | **2404.05225.pdfv1.pdf** | LayoutLLM uses layout-aware instruction tuning and LayoutCoT to improve document VQA/extraction. |
-| **2404.05225.pdfv1 (1).pdf** | Duplicate of LayoutLLM; same layout-aware document understanding method. |
-| **2404.05225.pdfv1 (2).pdf** | Second duplicate copy of LayoutLLM paper. |
-| **2404.12753.pdfv2.pdf** | Duplicate of AutoScraper paper; progressive understanding agent generating reusable web scrapers. |
+| **2404.05225.pdfv1 (1).pdf** | Duplicate of LayoutLLM (same as 2404.05225.pdfv1.pdf). |
+| **2404.05225.pdfv1 (2).pdf** | Second duplicate of LayoutLLM. |
+| **2404.12753.pdfv2.pdf** | Duplicate of AutoScraper (same as 2404.12753v2.pdf). |
 | **2406.10710v2.pdf** | SyntheT2C builds synthetic NL-to-Cypher pairs (MedT2C) via prompting/templates to improve Text2Cypher on medical KGs. |
 | **2407.05040v1.pdf** | Shows clustering/pruning synthetic code data lets code LLM fine-tuning keep quality using only ~10% of data. |
 | **2407.16434.pdfv2.pdf** | Structurizes long contexts into hierarchical elements, boosting QA, hallucination checks, and retrieval; distilled StruXGPT-7B performs the structurization. |
@@ -69,10 +67,10 @@ Na základe celého obsahu, ktorý bol k dispozícii v jednotlivých dokumentoch
 | **2410.09168.pdfv1.pdf** | Hybrid fine-tuning mixing real transcripts and synthetic scenarios yields better domain-specific LLMs than real-only data. |
 | **2410.12164v1.pdf** | Table-LLM-Specialist iteratively generator-validates synthetic data to create table specialists reaching GPT-4-like quality without labels. |
 | **2410.18362v2.pdf** | WAFFLE adds structure-aware attention and contrastive image-HTML alignment to improve UI-to-HTML code generation metrics. |
-| **2410.18362v2 (1).pdf** | Duplicate copy of WAFFLE UI-to-HTML fine-tuning paper. |
+| **2410.18362v2 (1).pdf** | Duplicate of WAFFLE (same as 2410.18362v2.pdf). |
 | **2410.19290.pdfv1.pdf** | Prereq-Tune inserts prerequisite learning plus fictitious synthetic data to cut hallucinations in QA and long-form generation. |
 | **2410.22456v1.pdf** | Image2Struct benchmark evaluates VLMs that generate HTML/LaTeX/music code from images via render-and-compare metrics. |
-| **2410.22456v1 (1).pdf** | Duplicate copy of Image2Struct benchmark. |
+| **2410.22456v1 (1).pdf** | Duplicate of Image2Struct (same as 2410.22456v1.pdf). |
 | **2412.07958.pdfv2.pdf** | PAFFA reuses precomputed action libraries (“Dist-Map”, “Unravel”) to speed web agents, reducing inference tokens by ~87%. |
 | **2503.01151.pdfv1.pdf** | ReaderLM-v2 (1.5B, 512K context) converts noisy HTML to Markdown/JSON via three-stage data synthesis, beating larger models on long docs. |
 | **2506.16594v1.pdf** | Scoping review (2020–2025) of synthetic biomedical data generation methods, modalities, and evaluations. |

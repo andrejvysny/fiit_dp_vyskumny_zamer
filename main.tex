@@ -43,7 +43,7 @@
 \begin{center}
 
 \begin{center}
-\textbf{\LARGE Large Language Models as Critics in Multi-Agent Semantic Web Crawling}
+\textbf{\LARGE Optimizing small LLM for HTML data extraction on edge devices}
 \par\end{center}{\huge \par}
 
 \medskip{}
@@ -78,144 +78,82 @@ Frameworks such as PyTorch, Hugging Face, LangChain, and DSPy enable the develop
 
 Analyze these technologies and compare their ecosystems from the perspective of both developers and end users. Also compare these tools in terms of their capabilities and accuracy in data extraction. Propose and implement an AI-powered web scraping tool that uses the latest technologies in the field of machine learning. Discuss how this approach differs from traditional web scraping methods. Finally, evaluate the tool you have implemented in terms of accuracy, scalability, and its ability to process dynamic web content from different domains.
 
-
+Within this broad assignment, the thesis will specifically focus on adapting and optimizing small local language models (approximately 7--8 billion parameters) for reliable structured data extraction from HTML pages on resource-constrained edge devices. The following sections refine the research context, goal, and methodology in line with this specialization.
 
 \newpage
 
 \section{Related work}
 
-Classical web crawling research has focused on scalable architectures, politeness, and efficient coverage of large link graphs. Early parallel and distributed crawlers introduced partitioning strategies such as domain-based sharding and seed–client architectures to balance load and reduce duplication, typically using link-based or simple lexical heuristics (for example, PageRank-like scores, indegree, or URL patterns) to prioritize pages \cite{gupta2014webparf, mukhopadhyay2011websailor, yadav2012incrementalcrawler, boldi2014bubing, olston2010webcrawling}.
+\subsection{HTML understanding and small LLMs}
 
-Focused and semantic crawlers concentrate the crawl budget on topic-relevant pages. They rely on natural language processing techniques such as named entity recognition and contextual embeddings to filter and prioritize content, substantially reducing the number of irrelevant documents and improving efficiency compared to purely link-based strategies \cite{dipietro2014semanticcrawling, kuehn2023threatcrawl}. Neural and LLM-guided scoring methods further estimate semantic quality or potential relevance using learned quality estimators, enabling crawlers to visit high-yield pages earlier and to prune low-quality content \cite{pezzuti2025neuralprioritization, kong2024lmds, chang2024neuralpassage}.
+Recent work shows that language models can exploit HTML structure directly rather than treating web pages as plain text. HTLM pre-trains on simplified HTML markup to leverage tag and formatting cues, improving classification and summarization of web content \cite{aghajanyan2021htlm}. DOM-LM jointly encodes tokens and DOM-tree structure with specialized position embeddings, yielding strong representations for attribute extraction and question answering over web pages \cite{deng2022domlm}. WebFormer extends this direction by introducing HTML-specific tokens and layout-aware attention for structured field extraction on semi-structured pages \cite{wang2022webformer}. HySem and related work further show how context-length-optimized pipelines can convert HTML tables into semantic JSON using compact models under strict cost and privacy constraints \cite{narayanan2024hysem}. ReaderLM-v2 demonstrates that even a 1.5B-parameter model with a long context window can robustly convert noisy HTML into Markdown and JSON when trained with appropriate synthetic data and multi-objective losses \cite{wang2025readerlmv2}.
 
-In parallel, LLM-based web agents and multi-agent architectures operate directly in real-world web environments. Systems such as DeepResearcher, WebSailor, and WebResearcher train or evaluate LLM agents that use tool calls (for example, web search and browsing) to answer complex queries over the open web, often combining multi-step reasoning, specialized agents that critique each other, and reinforcement learning guided by outcome-based rewards and LLM-as-a-Judge signals \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. These systems, however, typically rely on external search APIs or generic browsing interfaces rather than exposing a dedicated focused crawling layer with explicit information retrieval metrics. Practical frameworks such as LangChain, DSPy, FireCrawl, Crawl4AI, and Playwright-based tooling illustrate an emerging ecosystem of LLM-centric web scraping and orchestration libraries; the thesis will draw on these tools when analyzing related work and designing baselines.
+General-purpose LLMs have also been evaluated directly on HTML-centric tasks. Gur et al.\ fine-tune pretrained LLMs for HTML element classification, description generation, and autonomous navigation, showing that language understanding transfers effectively to DOM-level reasoning and that moderate-sized models can match or surpass specialized architectures on benchmarks such as MiniWoB \cite{gur2022understandinghtml}. Neveditsin et al.\ benchmark small language models for open attribute--value extraction and show that JSON is a robust output format; careful schema-aware prompting is required to maintain syntactic validity, especially for long or noisy inputs \cite{neveditsin2025structuredoutput}. Together, these works suggest that small LLMs, when paired with structure-aware inputs and robust output formats, can already perform high-quality HTML data extraction.
 
-The proposed thesis builds on this literature by combining focused and semantic crawling, neural quality estimation, and LLM-based web agents within a single architecture where multi-agent exploration, LLM-based reviewing, and (optionally) reinforcement learning jointly drive crawling, validation, and ranking for bounded-domain RAG applications.
+\subsection{Efficiency and adaptation of small models}
 
-\section{Research target}
+Adapting small models to specialized extraction tasks under tight compute budgets has been studied from both data-centric and model-centric perspectives. Kaddour and Liu fine-tune large teacher models to generate and label synthetic data for downstream small models, achieving significant gains in low-resource settings \cite{kaddour2023syntheticdata}. CRAFT retrieves relevant corpus segments and augments them into task-formatted examples, outperforming generic instruction-tuning pipelines for domain-specific question answering and summarization \cite{ziegler2024craft}. Müller et al.\ show that carefully designed prompting and data-selection heuristics can substantially improve small-model performance for requirement extraction in privacy-sensitive industrial settings, emphasizing that data quality often matters more than raw model size \cite{muller2025datacentric}.
 
-The starting point of this thesis is the observation that large language models (LLMs) require timely, high-quality training and retrieval data, while most up-to-date information is scattered across heterogeneous web content such as HTML pages, APIs, and documents. Existing crawling and scraping pipelines prioritize coverage, politeness, and freshness, often guided by link-based or lexical heuristics, whereas recent research has introduced semantic and domain-specific focused crawling and LLM-guided document selection to better target relevant, high-quality content \cite{gupta2014webparf, mukhopadhyay2011websailor, olston2010webcrawling, dipietro2014semanticcrawling, kuehn2023threatcrawl, pezzuti2025neuralprioritization, kong2024lmds, chang2024neuralpassage}.
+From an efficiency viewpoint, SLM-Bench benchmarks 15 small models across accuracy, compute, and environmental impact, finding that models in the 3--8B range often provide the best trade-off between quality and sustainability for many workloads \cite{pham2025slmbench}. PERP revisits pruning and retraining, showing that re-optimizing only a small fraction of parameters via LoRA-style adapters can recover much of the performance of a dense model at high sparsity levels \cite{zimmer2024perp}. Structurization methods convert long, unstructured inputs into ordered hierarchical formats that are easier for LLMs to process, improving reasoning on complex or lengthy contexts without changing the base architecture \cite{liu2024structurization}. These results indicate that combining structure-aware preprocessing, data-centric adaptation, and parameter-efficient fine-tuning is a promising path for deploying specialized small LLMs on constrained hardware.
 
-Despite these advances, crawling, document quality estimation, and retrieval-augmented generation (RAG) are still usually treated as loosely coupled components. Focused crawlers optimize harvest rate and ranking metrics on a static or slowly evolving link graph, while LLM-guided data selection is typically applied offline to an already collected corpus. Deep research agents operate on top of search APIs and ad-hoc browsing, but rarely expose a reusable crawling and indexing layer with explicit information retrieval (IR) metrics and data quality controls \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}. There is limited empirical evidence on how LLM-based critics, multi-agent exploration, and reinforcement learning (RL) can be combined to improve both the quality of a domain-specific corpus and the performance of RAG systems built on top of it.
+\section{Research context and thesis goal}
 
-The main objective of this thesis is to design, implement, and evaluate a multi-agent, LLM-assisted semantic crawling system that uses LLMs as critics of data quality and relevance. The system will operate in a bounded domain (for example, a focused set of technical or scientific websites) and will act as a retrieval layer for a downstream RAG or deep-research application. Several researcher agents will explore the web in parallel using different strategies, while reviewer agents---implemented as LLM-based critics---score candidate documents for relevance, quality, recency, and usefulness. These scores will drive both the prioritization of further crawling and the ranking of documents in the index. RL will be explored, if feasible, as an optional mechanism for adapting crawling and query strategies based on reviewer feedback and downstream RAG performance.
+\subsection{Problem motivation}
 
-\subsection{Problem statement and research gap}
+Many practical systems rely on up-to-date, structured data extracted from heterogeneous HTML pages, for example in e-commerce analytics, documentation search, or regulatory monitoring. Rule-based scrapers and wrapper-induction systems are brittle and expensive to maintain, while large cloud-hosted LLMs incur monetary costs, latency, and privacy risks and are difficult to deploy offline. Recent HTML-aware and small-model research suggests that compact LLMs can achieve competitive extraction performance when paired with structure-aware preprocessing, synthetic data pipelines, and careful prompting or fine-tuning \cite{deng2022domlm, wang2022webformer, narayanan2024hysem, wang2025readerlmv2, neveditsin2025structuredoutput, muller2025datacentric}. However, there is limited guidance on how to design an end-to-end pipeline that specializes small local models for HTML structure and semantics on edge devices, or on how such models compare to unspecialized small models and large cloud LLMs in terms of extraction quality and resource efficiency.
 
-Current web crawling pipelines are typically optimized for large-scale indexing and generic search, not for targeted domain-specific deep research. They rely on homogeneous heuristics for link prioritization and treat document validation as a separate filtering step. At the same time, LLM-based evaluation and LLM-as-a-Judge techniques have shown promise in assessing document quality and answer correctness, but are rarely used as first-class signals in the crawling and ranking loop itself \cite{pezzuti2025neuralprioritization, kong2024lmds}. Multi-agent architectures and RL-based web agents further demonstrate that diverse strategies and outcome-based rewards can improve long-horizon reasoning on the web \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}, yet they typically operate on top of external search services rather than controlling the underlying focused crawler. This creates a research gap for architectures that explicitly integrate:
-\begin{itemize}
-	    \item semantic and LLM-aware focused crawling, including neural prioritization and domain-specific relevance estimation;
-	    \item LLM-based reviewers that act as critics of document quality and as sources of reward signals for RL policies; and
-	    \item multi-agent exploration strategies that trade off breadth, depth, and diversity under a constrained crawl budget.
-\end{itemize}
-The thesis will investigate whether such an integrated architecture can measurably improve harvest rate and ranking quality during early crawling, as well as the robustness and factual accuracy of downstream RAG answers, compared to strong non-agentic and non-LLM baselines.
+\subsection{Research goal}
 
-\subsection{Main objective}
-
-The main objective of this thesis is to design, implement, and empirically evaluate a reusable multi-agent, LLM-assisted semantic crawling framework for a bounded web domain that serves as a retrieval layer for retrieval-augmented generation (RAG) applications. The framework is intended to be reused for future research on LLM-based web agents and RAG-aware crawling in similar bounded domains.
+The goal of this thesis is to explore and demonstrate how small local LLMs (approximately 7--8 billion parameters) can be adapted and optimized for reliable data extraction from HTML pages on resource-constrained edge devices. The work will develop and evaluate a structure-aware pipeline and evaluation framework that specializes small models for HTML structure and semantics, and will provide a systematic empirical comparison of optimized local models, their unspecialized variants, and large cloud LLMs, clarifying under which conditions small on-device models are a viable alternative for structured web data extraction in terms of extraction quality and resource efficiency.
 
 \subsection{Research questions}
 
-To achieve this objective, the thesis will address the following research questions and exploratory objectives:
+To realize this goal, the thesis will address the following research questions:
 \begin{itemize}
-    \item \textbf{RQ1 -- LLM-based versus traditional scoring:} How do LLM-based document quality and relevance scoring compare to traditional and embedding-based scoring for focused crawling and RAG retrieval in terms of crawling efficiency, ranking quality, and downstream response quality?
-    \item \textbf{RQ2 -- Multi-agent researcher and reviewer architecture:} Can a multi-agent setup with multiple researcher and reviewer agents (LLM critics) discover a more diverse and higher-quality set of documents than a single crawler or single-agent baseline under the same resource budget, and how does inter-agent feedback and sharing of high-value hubs influence performance?
-	    \item \textbf{Exploratory objective -- RL-guided navigation and strategy adaptation (optional):} Explore whether applying RL over high-level crawling and query actions (for example, link and source selection, depth-versus-breadth trade-offs) improves early harvest rate and RAG performance compared to hand-designed heuristics within the time and computational constraints of the thesis.
-	    \item \textbf{RQ3 -- Reliability of LLM-based validation:} How reliable are LLM-as-a-Judge signals (relevance, factuality, recency, usefulness) when used for ranking and, where RL is applied, as rewards compared to human annotations and traditional IR metrics, and under what conditions do these signals introduce bias or instability into the crawling and retrieval pipeline?
+    \item \textbf{RQ1 (pipeline design):} How do structure-aware HTML preprocessing strategies (for example, DOM-based segmentation and tag pruning) affect the extraction quality and robustness of small local LLMs compared to plain-text baselines?
+    \item \textbf{RQ2 (adaptation):} How do parameter-efficient fine-tuning, data-centric synthetic augmentation, and quantization influence the quality--efficiency trade-off of 7--8B local models on HTML extraction tasks relative to unspecialized small models?
+    \item \textbf{RQ3 (local vs.\ cloud):} Under which conditions (domain, page complexity, schema difficulty, and context length) can optimized local small models match or approach the extraction quality of large cloud LLMs while offering better latency, cost, or environmental characteristics?
+    \item \textbf{RQ4 (structured outputs):} How robust are JSON-style structured outputs---in terms of syntactic validity and schema adherence---across different models and HTML complexity levels?
 \end{itemize}
 
-\subsection{Scope and feasibility}
+\subsection{Scope and contributions}
 
-The thesis will focus on a single, well-defined domain and a limited set of crawling and agent policies to keep the project feasible. Existing LLMs and embedding models will be reused rather than trained from scratch, and the experimental setup will prioritize clear, reproducible metrics and ablation studies over exhaustive exploration of algorithmic variants.
+The thesis will focus on a small number of representative HTML extraction tasks in one or two domains (for example, product pages and documentation or course catalogues), each with a clearly defined JSON schema. Existing 7--8B open-source models will be used as local bases and adapted via parameter-efficient methods and lightweight quantization rather than full-model retraining. A small set of strong cloud LLMs will serve as black-box baselines and teachers for synthetic data generation and distillation, with costs kept manageable by limiting the number of calls and models.
 
-\subsection{Expected contributions}
-
-The expected contributions of this thesis are:
+Within this scope, the thesis aims to contribute:
 \begin{itemize}
-    \item a prototype architecture for multi-agent, LLM-assisted semantic crawling with integrated reviewer agents and optional RL-guided navigation;
-	    \item an empirical comparison of LLM-based document scoring against neural quality estimators, embedding-based similarity, and traditional IR baselines within a focused crawling pipeline;
-	    \item experimental evidence on the impact of multi-agent exploration and, where implemented, RL-based adaptation on harvest rate, ranking quality, corpus freshness, and downstream RAG answer quality; and
-	    \item a reusable experimental framework (code, configuration, and evaluation scripts) that can support future work on deep research agents and RAG-aware crawling.
+    \item a reusable, structure-aware HTML extraction pipeline for small local LLMs, including DOM-based preprocessing and schema-aware prompting;
+    \item a parameter-efficient adaptation strategy for 7--8B local models on HTML extraction tasks, combining synthetic data and small-scale fine-tuning \cite{kaddour2023syntheticdata, ziegler2024craft, muller2025datacentric, zimmer2024perp};
+    \item a systematic evaluation of local versus cloud LLMs that jointly measures extraction quality, structured-output robustness, latency, memory footprint, and simple compute or energy proxies, inspired by SLM-Bench and related work \cite{pham2025slmbench};
+    \item empirical evidence clarifying in which domains and conditions small on-device models are a viable alternative to large cloud LLMs for structured web data extraction.
 \end{itemize}
 
 \section{Methodology}
 
-The methodology follows a design-science and experimental approach in which a prototype multi-agent, LLM-assisted semantic crawler is iteratively developed and evaluated against strong baselines on a bounded web domain.
+The methodology follows a design-science and experimental approach. A structure-aware HTML extraction pipeline and several small local LLM variants will be designed, implemented, and evaluated against unspecialized local models and large cloud LLMs on shared tasks and datasets.
 
-\subsection{Overall research design}
+\subsection{Experimental design}
 
-The work is organized into the following phases:
-\begin{enumerate}
-    \item \textbf{Domain selection and ground truth:} choose a bounded, technically oriented domain (for example, a subset of cyber threat intelligence sources or scientific websites), define information needs and representative queries, and construct a small gold-standard set of manually labeled documents used for hyper-parameter tuning and supervised metrics. Where the domain relies heavily on client-side rendering or dynamic content, incorporate browser-based scraping tools (for example, Playwright) to capture rendered HTML.
-    \item \textbf{Baseline crawling and retrieval pipeline:} implement a focused crawler with traditional or embedding-based scoring that collects and parses pages into passages using standard HTML parsing and boilerplate removal, and build a retrieval-augmented generation (RAG) pipeline on top of a vector index to provide the main non-LLM and non-agentic baseline.
-    \item \textbf{LLM-based validation and scoring:} design reviewer prompts so that a strong LLM scores documents along relevance, quality, recency, and factuality; combine these into a single quality score and, where feasible, distill them into a cheaper classifier or regressor used during online crawling.
-    \item \textbf{Multi-agent architecture:} extend the baseline into a system with several researcher agents that propose crawling actions and reviewer agents that apply LLM-based evaluation, coordinated through a shared frontier and index.
-    \item \textbf{RL-guided policy (optional):} if resources allow, model high-level strategy adaptation as a reinforcement learning problem with compact state features summarizing crawler behavior, actions over link and source selection and exploration parameters, and rewards combining reviewer scores, crawling metrics, and RAG performance.
-    \item \textbf{Evaluation and ablation studies:} compare system variants under controlled crawl budgets using crawling, ranking, and RAG metrics, and perform ablation studies to isolate the contribution of LLM-based scoring, multi-agent exploration, and any RL-based adaptation.
-\end{enumerate}
+The experiments will be instantiated on one or two concrete HTML extraction tasks, each defined by a target JSON schema (for example, product attributes or course metadata). HTML pages for the chosen domains will be collected with standard scraping tools such as Playwright-based crawlers, then parsed into DOM trees. Candidate subtrees around relevant content will be extracted and linearized using different structure-aware preprocessing strategies inspired by DOM-LM, WebFormer, HySem, and structurization techniques \cite{deng2022domlm, wang2022webformer, narayanan2024hysem, liu2024structurization}. Labeled examples will be created by combining teacher-LM annotations with manual corrections and targeted synthetic augmentation \cite{kaddour2023syntheticdata, ziegler2024craft, muller2025datacentric}.
 
-\section{Evaluation}
-
-Evaluation focuses on three aspects: (i) crawling efficiency and coverage, (ii) retrieval and ranking quality, and (iii) downstream RAG answer quality. All experiments compare the proposed system against well-defined baselines under matched resource budgets and report basic scalability indicators such as how performance and resource usage change with increasing crawl budget or domain size.
-
-\subsection{Evaluation objectives and baselines}
-
-The main evaluation objectives are as follows:
+For each task, the thesis will compare three main model configurations:
 \begin{itemize}
-    \item quantify how LLM-based document scoring affects crawling efficiency and ranking quality compared to traditional or embedding-based scoring (RQ1);
-    \item measure the impact of the multi-agent architecture on the diversity and quality of discovered documents (RQ2);
-    \item evaluate the reliability and stability of LLM-based judgments used as ranking signals and, where RL is applied, as reward signals (RQ3); and
-    \item as an exploratory objective, assess whether RL-guided strategies, if implemented, improve early-yield effectiveness and RAG performance over hand-crafted policies.
+    \item a strong cloud LLM accessed via API as a zero- or few-shot baseline;
+    \item an unspecialized 7--8B local LLM used with generic extraction prompts and minimal preprocessing; and
+    \item a specialized 7--8B local LLM adapted with parameter-efficient fine-tuning and, where appropriate, quantization on curated HTML--JSON pairs.
 \end{itemize}
-To address these objectives, the following system variants will be compared:
-\begin{enumerate}
-    \item a \emph{baseline semantic crawler} with embedding-based scoring and no LLM reviewers;
-    \item a \emph{single agent crawler with LLM-based scoring}, where reviewer scores influence frontier prioritization and index filtering;
-    \item a \emph{multi-agent crawler} with multiple researcher and reviewer agents sharing a common index and feedback channels; and
-    \item optionally, an \emph{RL-enhanced multi-agent system}, where a learned policy adapts high-level strategies.
-\end{enumerate}
-All configurations use the same domain, seed set, and crawling budget, and are evaluated on identical query sets and labeled subsets of documents.
 
-\subsection{Crawling metrics}
+\subsection{Evaluation}
 
-To evaluate crawl efficiency and coverage, the thesis will use metrics inspired by focused crawling and neural prioritization research \cite{kuehn2023threatcrawl, dipietro2014semanticcrawling, pezzuti2025neuralprioritization}:
+All models will be evaluated on the same held-out test sets and on the same edge device when applicable. The evaluation will focus on three aspects:
 \begin{itemize}
-    \item \textbf{Harvest rate (HR):} the proportion of fetched documents that are labeled as relevant in the gold-standard set. HR is computed cumulatively as a function of the number of pages fetched, emphasizing early-yield performance.
-    \item \textbf{Relevant documents found in budget $B$:} the absolute number of relevant documents discovered within a fixed crawl budget (for example, after $B$ pages), which reflects how efficiently a variant uses its resources.
-    \item \textbf{Coverage of sources and topics:} the number of distinct domains or source sites visited and the distribution of topics covered, to assess whether multi-agent strategies improve diversity.
-    \item \textbf{Freshness (if applicable):} for domains with time-stamped content, simple freshness indicators (for example, fraction of documents updated within the last year) will be reported, following incremental crawling work \cite{yadav2012incrementalcrawler, jcssp.2015.120.126}.
+    \item \textbf{Extraction quality:} field-level precision, recall, and F1; exact-match accuracy of JSON objects; and, where relevant, simple domain-specific measures (for example, numeric error on prices or date fields).
+    \item \textbf{Structured-output robustness:} fraction of outputs that are syntactically valid JSON and conform to the expected schema (correct types and required fields), with error categories inspired by prior work on structured-output robustness \cite{neveditsin2025structuredoutput}.
+    \item \textbf{Efficiency and resource usage:} latency per page, throughput under batch workloads, memory footprint (including adapter and quantization configurations), and simple compute or energy proxies following SLM-Bench-style reporting \cite{pham2025slmbench}.
 \end{itemize}
-Relevance labels for HR and related quantities are obtained from the manually annotated gold-standard set, possibly complemented by carefully calibrated LLM-based annotations in low-risk cases.
 
-\subsection{Retrieval and ranking metrics}
-
-Retrieval and ranking quality are assessed on a held-out query set with document-level or passage-level relevance labels. The main metrics are:
-\begin{itemize}
-    \item \textbf{nDCG@k:} normalized discounted cumulative gain at cut-off $k$, which captures both relevance and rank position and is widely used in information retrieval and focused crawl evaluation \cite{pezzuti2025neuralprioritization};
-    \item \textbf{MAP@k and MRR:} mean average precision and mean reciprocal rank at cut-off $k$, reflecting early precision and the ability to place at least one relevant item near the top of the ranking; and
-    \item \textbf{Recall@k:} the fraction of all relevant documents for a query that appear within the top-$k$ retrieved items, indicating how much of the relevant corpus the system can surface.
-\end{itemize}
-These metrics are computed separately for the baseline and for each LLM-enhanced variant, using the same underlying annotated subset of the corpus. When sampling documents for labeling, care is taken to include both high-scoring and low-scoring items to obtain meaningful estimates.
-
-\subsection{RAG answer quality}
-
-To assess the impact of crawling and scoring on downstream question answering, a subset of queries is equipped with reference answers or detailed evaluation rubrics. For each system variant:
-\begin{itemize}
-    \item the RAG pipeline retrieves top-$k$ passages from the corresponding index and generates an answer using a fixed LLM;
-    \item automatic overlap-based metrics such as token-level F1 or ROUGE-1 are computed where suitable reference answers exist; and
-    \item an LLM-as-a-Judge evaluation is performed using a separate model prompted to rate answers along dimensions such as correctness, relevance, completeness, and faithfulness to the retrieved evidence, following practices from deep research and web-agent work \cite{zheng2025deepresearcher, li2025websailor, qiao2025webresearcher}.
-\end{itemize}
-For a smaller subset of queries, human judgments are collected (for example, from the author or domain experts) to calibrate the LLM-as-a-Judge scores and to check for systematic biases. Where appropriate, correlations between human and LLM-based ratings are reported.
-
-\subsection{Ablation and robustness analysis}
-
-To better understand the contribution of individual components, the thesis will conduct ablation studies, such as:
-\begin{itemize}
-    \item disabling LLM-based scoring while keeping the multi-agent architecture, to isolate the effect of reviewers;
-    \item collapsing the multi-agent system into a single agent with the same reviewer, to measure the benefit of parallel exploration; and
-    \item turning off any RL-based adaptation (if implemented) to compare learned policies to heuristic strategies.
-\end{itemize}
-Each experiment is repeated with different random seeds or permutations of the crawl frontier, where possible, and mean values with confidence intervals are reported. For key comparisons (for example, baseline versus full system), simple significance tests (such as paired $t$-tests or non-parametric alternatives) are used to assess whether observed improvements are statistically meaningful, within the limitations of thesis-scale experiments.
+Simple ablation experiments will remove individual components, such as structure-aware preprocessing or fine-tuning, to isolate their contributions to quality and efficiency. Where practical, results will be averaged over multiple runs or seeds, and basic confidence intervals will be reported for key comparisons.
 
 \printbibliography
 \end{document}
+
