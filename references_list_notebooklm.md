@@ -42,3 +42,46 @@ Na základe celého obsahu, ktorý bol k dispozícii v jednotlivých dokumentoch
 | **3637528.3671620.pdf** | Dokument predstavuje **AutoWebGLM**, agenta na **navigáciu na webe (Web Navigating Agent)** založeného na Veľkých jazykových modeloch (LLM). Agent je trénovaný, aby generoval príkazy a uvažoval s cieľom interakcie s webovými stránkami a dokončenia úlohy. |
 | **Semantic\_crawling\_An\_approach\_based\_on\_Named\_Entity\_Recognition.pdf** | Dokument popisuje **Semantic Crawler**, fokusovaný webový prehľadávač (focused web crawler) využívajúci **Named Entity Recognition (NER)**. Kľúčová funkcia spočíva v riešení **sémantickej nejednoznačnosti kľúčových slov** a zabezpečuje, aby sa prehľadávali len dokumenty, kde je kľúčové slovo klasifikované s očakávanou entitou. |
 | **jcssp.2015.120.126.pdf** | Práca navrhuje **škálovateľný fokusovaný prehľadávač (focused crawler) s inkrementálnym paralelným webovým prehľadávačom**. Architektúra je navrhnutá na súbežné prehľadávanie stránok relevantných pre **viaceré preddefinované témy** a obsahuje nový model radenia, ktorý zabezpečuje **vysokú kvalitu, relevantnosť a aktuálnosť** (freshness) stiahnutých stránok. |
+| **2025.acl-srw.19.pdf** | Evaluates small LMs formatting attribute-value extractions from clinical notes; JSON parses best, while targeted prompting improves robustness but long inputs hurt structure. |
+| **2107.06955.pdfv1.pdf** | HTLM pretrains on simplified HTML with denoising, leveraging markup semantics to beat text-only LMs on zero-shot prompting and summarization. |
+| **2201.10608.pdfv1.pdf** | DOM-LM jointly encodes text and DOM trees for webpages, delivering better attribute extraction, OIE, and QA generalization. |
+| **2201.10608.pdfv1 (1).pdf** | Duplicate copy of DOM-LM; same HTML+DOM representation learning approach. |
+| **2202.00217.pdfv1.pdf** | WebFormer introduces HTML tokens with graph attention and layout-aware patterns for structured field extraction, outperforming prior baselines. |
+| **2202.00217.pdfv1 (1).pdf** | Duplicate of WebFormer; same transformer architecture for structured web extraction. |
+| **2210.03347v2.pdf** | Pix2Struct pretrains an image-to-text model to emit simplified HTML from masked screenshots, reaching SOTA across doc, UI, and vision-language tasks. |
+| **2307.12856v4.pdf** | WebAgent combines planning, long-HTML summarization, and code execution (Flan-U-PaLM + HTML-T5) to boost real-site task success. |
+| **2309.11042.pdfv1.pdf** | ALTER adds mixture-of-task adapters to small LMs with two-stage training, enabling efficient multi-task learning. |
+| **2310.01119.pdfv2.pdf** | Uses fine-tuned teacher LLMs to synthesize/label data, markedly improving small-model performance in low-resource classification and generation. |
+| **2312.15230v3.pdf** | PERP shows retraining tiny parameter subsets (LoRA-like) can recover pruned LLMs; introduces mergeable adapters for high-sparsity cases. |
+| **2402.04437.pdfv5.pdf** | Defines AESOP metric and MuSEE multi-stage model for entity-centric structured extraction, outperforming baselines. |
+| **2402.14129.pdfv1.pdf** | GraphScholarBERT fuses graph and language encoders for zero-shot relation extraction on semi-structured web pages. |
+| **2403.07384v2.pdf** | S2L clusters small-model loss trajectories to select fine-tuning subsets, matching full-data performance with far less data. |
+| **2404.05225.pdfv1.pdf** | LayoutLLM uses layout-aware instruction tuning and LayoutCoT to improve document VQA/extraction. |
+| **2404.05225.pdfv1 (1).pdf** | Duplicate of LayoutLLM; same layout-aware document understanding method. |
+| **2404.05225.pdfv1 (2).pdf** | Second duplicate copy of LayoutLLM paper. |
+| **2404.12753.pdfv2.pdf** | Duplicate of AutoScraper paper; progressive understanding agent generating reusable web scrapers. |
+| **2406.10710v2.pdf** | SyntheT2C builds synthetic NL-to-Cypher pairs (MedT2C) via prompting/templates to improve Text2Cypher on medical KGs. |
+| **2407.05040v1.pdf** | Shows clustering/pruning synthetic code data lets code LLM fine-tuning keep quality using only ~10% of data. |
+| **2407.16434.pdfv2.pdf** | Structurizes long contexts into hierarchical elements, boosting QA, hallucination checks, and retrieval; distilled StruXGPT-7B performs the structurization. |
+| **2408.09434v2.pdf** | HySem pipeline optimizes context length to convert HTML tables into semantic JSON for pharma compliance on modest hardware. |
+| **2409.02098.pdfv2.pdf** | CRAFT retrieves similar web text and LLM-augments it into task-formatted samples, outperforming other synthetic data generators. |
+| **2409.19445v1.pdf** | HTML-LSTM applies tree-structured LSTM to merge structurally different but semantically similar HTML tables for unified extraction. |
+| **2410.09168.pdfv1.pdf** | Hybrid fine-tuning mixing real transcripts and synthetic scenarios yields better domain-specific LLMs than real-only data. |
+| **2410.12164v1.pdf** | Table-LLM-Specialist iteratively generator-validates synthetic data to create table specialists reaching GPT-4-like quality without labels. |
+| **2410.18362v2.pdf** | WAFFLE adds structure-aware attention and contrastive image-HTML alignment to improve UI-to-HTML code generation metrics. |
+| **2410.18362v2 (1).pdf** | Duplicate copy of WAFFLE UI-to-HTML fine-tuning paper. |
+| **2410.19290.pdfv1.pdf** | Prereq-Tune inserts prerequisite learning plus fictitious synthetic data to cut hallucinations in QA and long-form generation. |
+| **2410.22456v1.pdf** | Image2Struct benchmark evaluates VLMs that generate HTML/LaTeX/music code from images via render-and-compare metrics. |
+| **2410.22456v1 (1).pdf** | Duplicate copy of Image2Struct benchmark. |
+| **2412.07958.pdfv2.pdf** | PAFFA reuses precomputed action libraries (“Dist-Map”, “Unravel”) to speed web agents, reducing inference tokens by ~87%. |
+| **2503.01151.pdfv1.pdf** | ReaderLM-v2 (1.5B, 512K context) converts noisy HTML to Markdown/JSON via three-stage data synthesis, beating larger models on long docs. |
+| **2506.16594v1.pdf** | Scoping review (2020–2025) of synthetic biomedical data generation methods, modalities, and evaluations. |
+| **2508.15478v2.pdf** | SLM-Bench compares 15 small LMs on accuracy, compute, and sustainability across 9 tasks and 4 hardware setups. |
+| **2510.04871v1.pdf** | Tiny Recursive Model (7M) achieves strong puzzle reasoning (ARC-AGI, Sudoku) via simple recursive loops, surpassing many LLMs. |
+| **2510.18143v1.pdf** | PaDA-Agent mines validation failures to design pattern-guided augmentations, improving small LM fine-tuning. |
+| **3580305.3599929.pdf** | VRDU benchmark features diverse templates and hierarchical fields; highlights difficulty of generalizing document extraction across layouts. |
+| **41467_2024_Article_45914.pdf** | ChatExtract prompt framework uses conversational LLM follow-ups to accurately extract materials data (~90% precision/recall). |
+| **Data-Centric_Fine-Tuning_of_Small_Language_Models_for_Automatic_Extraction_of_Technical_Requirements.pdf** | Data-centric prompting enhances training data to fine-tune small LMs for technical requirement extraction under privacy and cost constraints. |
+| **ExampleProjectFromPreviousYears.pdf** | Slovak student project describing architecture, AS-IS/TO-BE models, migration plan, and costs for a municipal information system. |
+| **futureinternet-16-00167.pdf** | Presents LLM-assisted but human-supervised workflow for systematic/literature reviews to reduce screening and summarization effort. |
+| **tacl_a_00466.pdf** | VILA inserts layout-group tokens and hierarchical encoding to improve PDF structured extraction with lower cost and faster inference. |
