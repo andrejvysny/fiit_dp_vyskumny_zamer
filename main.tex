@@ -67,8 +67,8 @@
 \newpage
 
 \section{Assignment}
-\textbf{
-Application of artificial intelligence methods to website scraping problems}
+\textbf{ Application of artificial intelligence methods to web scraping}
+
 
 With the popularization of large language models (LLMs), the question has emerged of how to keep these models up to date and ensure that their knowledge reflects current events in the world. Most up-to-date information is found in the online web environment. As the need to provide LLMs with current knowledge grows, so does the need to create, use, and maintain reliable web scrapers that collect the latest information.
 
@@ -153,6 +153,32 @@ Where feasible, models will be evaluated on shared held-out test sets and run on
 \end{itemize}
 
 Simple ablation experiments will remove individual components, such as structure-aware preprocessing or fine-tuning, to isolate their contributions to quality and efficiency. The exact set of ablations will be selected once the most influential components are identified during experimentation. Where practical, results will be averaged over multiple runs or seeds, and basic confidence intervals will be reported for key comparisons.
+
+\section{Three-semester work plan (DPI--DPIII)}
+
+\subsection*{Diploma Project I (DPI)}
+
+\begin{itemize}
+    \item Refine the problem statement, research questions, and success criteria in collaboration with the supervisor, based on the official assignment.
+    \item Conduct a focused literature review on AI-based web scraping, HTML-aware language models, and small LLM optimization; curate an initial set of representative HTML pages and target schemas.
+    \item Prototype the web scraping and HTML preprocessing pipeline (for example, Playwright-based crawling, DOM extraction, structure-aware linearization) and design the initial experimental setup.
+\end{itemize}
+
+\subsection*{Diploma Project II (DPII)}
+
+\begin{itemize}
+    \item Implement the full structure-aware HTML extraction pipeline and integrate selected small local LLMs together with baseline cloud LLM APIs.
+    \item Construct labeled datasets using teacher-LM or rule-based annotations with manual corrections and targeted synthetic augmentation, and run the first series of experiments on extraction quality and robustness.
+    \item Iterate on model adaptation strategies (parameter-efficient fine-tuning, quantization, prompt and schema design) based on pilot results, updating the experimental design as needed.
+\end{itemize}
+
+\subsection*{Diploma Project III (DPIII)}
+
+\begin{itemize}
+    \item Complete large-scale experiments on all selected tasks and domains, including ablations for key pipeline components and efficiency profiling on representative edge hardware.
+    \item Analyze results in depth, answer the formulated research questions, and derive clear recommendations regarding when small on-device models are a viable alternative to cloud LLMs.
+    \item Finalize the thesis manuscript, figures, and tables, prepare artefacts for reproducibility (code, configuration, datasets where possible), and create materials for the defense presentation and demonstrations.
+\end{itemize}
 
 \printbibliography
 \end{document}
